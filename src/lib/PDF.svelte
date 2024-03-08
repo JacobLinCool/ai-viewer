@@ -15,6 +15,7 @@
 	$: data = browser ? window.pdfjsLib.getDocument(src).promise : null;
 
 	let canvas: HTMLCanvasElement;
+	let ready: HTMLElement;
 
 	onMount(load);
 
@@ -33,6 +34,7 @@
 		canvas.height = viewport.height;
 		canvas.width = viewport.width;
 		await target.render({ canvasContext: context, viewport }).promise;
+		ready.className = `page-${page}`;
 	}
 </script>
 
@@ -65,6 +67,7 @@
 	{:catch error}
 		<p style="color: red">{error.message}</p>
 	{/await}
+	<span id="ready" bind:this={ready}></span>
 </div>
 
 <style>
@@ -87,5 +90,9 @@
 	}
 	#controls:hover {
 		opacity: 1;
+	}
+
+	#ready {
+		display: none;
 	}
 </style>
